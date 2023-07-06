@@ -8,30 +8,35 @@ export class InMemoryPendingItemsRepository implements PendingItemsRepository {
     private pendingItems: PendingItem[] = [
         {
             id: "69b23172-b1ed-40c3-a5f9-78ee1574342a",
+            userId: "f97be3f5-4af3-419b-bb56-8520f0a49ce6",
             name: "Mindset",
             description: "Read the Mindset book by Carol S. S. Dweck",
             numberOfHours: 12
         },
         {
             id: "bbd020d9-b989-4e4c-9b00-7a4cee75257b",
+            userId: "f97be3f5-4af3-419b-bb56-8520f0a49ce6",
             name: "Mass Effect 2",
             description: "Finish Mass Effect 2 videogame",
             numberOfHours: 24
         },
         {
             id: "9473e378-c658-4dee-b34b-78a756e3c958",
+            userId: "f97be3f5-4af3-419b-bb56-8520f0a49ce6",
             name: "Homeland",
             description: "Finish TV Show homeland",
             numberOfHours: 4
         }
     ]
 
-    findAllPendingItems(): PendingItem[] {
-        return this.pendingItems;
+    findAllPendingItems(userId: string): PendingItem[] {
+        return this.pendingItems.filter(pendingItem => pendingItem.userId === userId);
     }
 
-    findPendingItem(id: string): PendingItem {
-        const pendingItem = this.pendingItems.filter(pendingItem => pendingItem.id === id)[0];
+    findPendingItem(userId: string, id: string): PendingItem {
+        const pendingItem = 
+            this.pendingItems
+                    .find(pendingItem => pendingItem.id === id && pendingItem.userId === userId);
 
         if (!pendingItem) {
             throw Error(`Pending item ${id} not found`);
@@ -40,17 +45,20 @@ export class InMemoryPendingItemsRepository implements PendingItemsRepository {
         return pendingItem;
     }
 
-    createPendingItem(pendingItem: CreatePendingItem): PendingItem {
+    createPendingItem(userId: string, pendingItem: CreatePendingItem): PendingItem {
         this.pendingItems.push({
             id: uuidv4(),
+            userId: userId,
             ...pendingItem
         });
 
         return this.pendingItems[this.pendingItems.length - 1];
     }
 
-    updatePendingItem(id: string, pendingItem: UpdatePendingItem): PendingItem {
-        let pendingItemToUpdate = this.pendingItems.filter(pendingItem => pendingItem.id === id)[0];
+    updatePendingItem(userId: string, id: string, pendingItem: UpdatePendingItem): PendingItem {
+        let pendingItemToUpdate = 
+            this.pendingItems
+                    .find(pendingItem => pendingItem.id === id && pendingItem.userId === userId);
 
         if (!pendingItemToUpdate) {
             throw Error(`Pending item ${id} not found`);
@@ -67,7 +75,17 @@ export class InMemoryPendingItemsRepository implements PendingItemsRepository {
         return pendingItemToUpdate;
     }
 
-    deletePendingItem(id: string): void {
-        this.pendingItems = this.pendingItems.filter(pendingItem => pendingItem.id !== id);
+    deletePendingItem(userId: string, id: string): void {
+        const pendingItem = 
+            this.pendingItems
+                    .find(pendingItem => pendingItem.id === id && pendingItem.userId === userId);
+
+        if (!pendingItem) {
+            return;
+        }
+
+        this.pendingItems = 
+            this.pendingItems
+                    .filter(pendingItem => pendingItem.id !== id);
     }
 }

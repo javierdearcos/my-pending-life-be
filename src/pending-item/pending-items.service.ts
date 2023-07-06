@@ -6,23 +6,23 @@ import { PendingItemsRepository } from './pending-items.repository';
 export class PendingItemsService {
   constructor(@Inject(PendingItemsRepository) private readonly pendingItemRepository: PendingItemsRepository) {}
 
-  create(createPendingItemDto: CreatePendingItem): PendingItem {
-    return this.pendingItemRepository.createPendingItem(createPendingItemDto)
+  create(userId: string, createPendingItem: CreatePendingItem): PendingItem {
+    return this.pendingItemRepository.createPendingItem(userId, createPendingItem);
   }
 
-  findAll(): PendingItem[] {
-    return this.pendingItemRepository.findAllPendingItems();
+  findAll(userId: string): PendingItem[] {
+    return this.pendingItemRepository.findAllPendingItems(userId);
   }
 
-  findOne(id: string): PendingItem {
-    return this.pendingItemRepository.findPendingItem(id);
+  findOne(userId: string, id: string): PendingItem {
+    return this.pendingItemRepository.findPendingItem(userId, id);
   }
 
-  update(id: string, updatePendingItemDto: UpdatePendingItem): PendingItem {
-    return this.pendingItemRepository.updatePendingItem(id, updatePendingItemDto);
+  update(userId: string, id: string, updatePendingItemDto: UpdatePendingItem): PendingItem {
+    return this.pendingItemRepository.updatePendingItem(userId, id, updatePendingItemDto);
   }
 
-  remove(id: string): void {
-    this.pendingItemRepository.deletePendingItem(id);
+  remove(userId: string, id: string): void {
+    this.pendingItemRepository.deletePendingItem(userId, id);
   }
 }
