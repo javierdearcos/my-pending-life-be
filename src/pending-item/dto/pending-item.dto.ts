@@ -1,4 +1,4 @@
-export class PendingItem {
+export class PendingItemDto {
     id: string;
     name: string;
     description?: string;

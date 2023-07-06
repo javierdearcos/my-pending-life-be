@@ -1,14 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { CreatePendingItemDto } from './dto/create-pending-item.dto';
-import { UpdatePendingItemDto } from './dto/update-pending-item.dto';
-import { PendingItem } from './entities/pending-item.entity';
+import { Inject, Injectable } from '@nestjs/common';
+import { CreatePendingItem, PendingItem, UpdatePendingItem } from './entities';
 import { PendingItemsRepository } from './pending-items.repository';
 
 @Injectable()
 export class PendingItemsService {
-  constructor(private readonly pendingItemRepository: PendingItemsRepository) {}
+  constructor(@Inject(PendingItemsRepository) private readonly pendingItemRepository: PendingItemsRepository) {}
 
-  create(createPendingItemDto: CreatePendingItemDto): PendingItem {
+  create(createPendingItemDto: CreatePendingItem): PendingItem {
     return this.pendingItemRepository.createPendingItem(createPendingItemDto)
   }
 
@@ -20,7 +18,7 @@ export class PendingItemsService {
     return this.pendingItemRepository.findPendingItem(id);
   }
 
-  update(id: string, updatePendingItemDto: UpdatePendingItemDto): PendingItem {
+  update(id: string, updatePendingItemDto: UpdatePendingItem): PendingItem {
     return this.pendingItemRepository.updatePendingItem(id, updatePendingItemDto);
   }
 
