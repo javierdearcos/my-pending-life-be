@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
+import { PendingItemsModule } from './pending-item/pending-items.module';
 
 @Module({
-  imports: [],
+  imports: [PendingItemsModule],
   controllers: [],
   providers: [],
 })
