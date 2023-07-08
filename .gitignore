@@ -1,4 +1,7 @@
-# compiled output
+# Config File
+.env
+
+# Compiled Output
 /dist
 /node_modules
 
