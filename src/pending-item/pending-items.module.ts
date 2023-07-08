@@ -8,11 +8,12 @@ process.env.NODE_ENV = 'dev';
 
 const PendingItemsRepositoryProvider = {
   provide: PendingItemsRepository,
-  useClass: process.env.NODE_ENV === 'dev' ? InMemoryPendingItemsRepository : null,
+  useClass:
+    process.env.NODE_ENV === 'dev' ? InMemoryPendingItemsRepository : null,
 };
 
 @Module({
   controllers: [PendingItemsController],
-  providers: [PendingItemsService, PendingItemsRepositoryProvider]
+  providers: [PendingItemsService, PendingItemsRepositoryProvider],
 })
 export class PendingItemsModule {}

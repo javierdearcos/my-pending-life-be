@@ -1,7 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+} from '@nestjs/common';
 import { PendingItemsService } from './pending-items.service';
-import { CreatePendingItemDto, PendingItemDto, UpdatePendingItemDto } from './dto';
-
+import {
+  CreatePendingItemDto,
+  PendingItemDto,
+  UpdatePendingItemDto,
+} from './dto';
 
 interface User {
   id: string;
@@ -12,7 +24,7 @@ export class PendingItemsController {
   constructor(private readonly pendingItemService: PendingItemsService) {}
 
   private user: User = {
-    id: "f97be3f5-4af3-419b-bb56-8520f0a49ce6"
+    id: 'f97be3f5-4af3-419b-bb56-8520f0a49ce6',
   };
 
   @Post()
@@ -22,7 +34,7 @@ export class PendingItemsController {
 
   @Get()
   findAll(): PendingItemDto[] {
-    return this.pendingItemService.findAll(this.user.id, );
+    return this.pendingItemService.findAll(this.user.id);
   }
 
   @Get(':id')
@@ -31,8 +43,15 @@ export class PendingItemsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePendingItemDto: UpdatePendingItemDto): PendingItemDto {
-    return this.pendingItemService.update(this.user.id, id, updatePendingItemDto);
+  update(
+    @Param('id') id: string,
+    @Body() updatePendingItemDto: UpdatePendingItemDto,
+  ): PendingItemDto {
+    return this.pendingItemService.update(
+      this.user.id,
+      id,
+      updatePendingItemDto
+    );
   }
 
   @Delete(':id')

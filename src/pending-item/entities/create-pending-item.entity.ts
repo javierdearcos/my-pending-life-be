@@ -1,5 +1,6 @@
 export class CreatePendingItem {
-    name: string;
-    description?: string;
-    numberOfHours: number;
+  name: string;
+  description?: string;
+  numberOfHours: number;
+  cost?: number;
 }

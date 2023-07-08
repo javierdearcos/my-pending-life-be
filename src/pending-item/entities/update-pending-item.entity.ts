@@ -1,4 +1,7 @@
-import { PartialType } from "@nestjs/mapped-types";
-import { CreatePendingItem } from "./create-pending-item.entity";
+import { PartialType } from '@nestjs/mapped-types';
+import { CreatePendingItem } from './create-pending-item.entity';
 
-export class UpdatePendingItem extends PartialType(CreatePendingItem) {}
+export class UpdatePendingItem extends PartialType(CreatePendingItem) {
+  status: string;
+  prioritized: boolean;
+}
