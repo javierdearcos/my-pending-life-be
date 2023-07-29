@@ -1,5 +1,5 @@
 export class PendingItemDto {
-  id: string;
+  id?: string;
   name: string;
   description?: string;
   numberOfHours: number;

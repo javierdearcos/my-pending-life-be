@@ -28,17 +28,17 @@ export class PendingItemsController {
   };
 
   @Post()
-  create(@Body() createPendingItemDto: CreatePendingItemDto): PendingItemDto {
+  create(@Body() createPendingItemDto: CreatePendingItemDto): Promise<PendingItemDto> {
     return this.pendingItemService.create(this.user.id, createPendingItemDto);
   }
 
   @Get()
-  findAll(): PendingItemDto[] {
+  findAll(): Promise<PendingItemDto[]> {
     return this.pendingItemService.findAll(this.user.id);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): PendingItemDto {
+  findOne(@Param('id') id: string): Promise<PendingItemDto> {
     return this.pendingItemService.findOne(this.user.id, id);
   }
 
@@ -46,7 +46,7 @@ export class PendingItemsController {
   update(
     @Param('id') id: string,
     @Body() updatePendingItemDto: UpdatePendingItemDto,
-  ): PendingItemDto {
+  ): Promise<PendingItemDto> {
     return this.pendingItemService.update(
       this.user.id,
       id,

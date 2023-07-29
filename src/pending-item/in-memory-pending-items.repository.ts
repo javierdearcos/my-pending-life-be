@@ -43,13 +43,13 @@ export class InMemoryPendingItemsRepository implements PendingItemsRepository {
     },
   ];
 
-  findAllPendingItems(userId: string): PendingItem[] {
-    return this.pendingItems.filter(
+  findAllPendingItems(userId: string): Promise<PendingItem[]> {
+    return Promise.resolve(this.pendingItems.filter(
       (pendingItem) => pendingItem.userId === userId,
-    );
+    ));
   }
 
-  findPendingItem(userId: string, id: string): PendingItem {
+  findPendingItem(userId: string, id: string): Promise<PendingItem> {
     const pendingItem = this.pendingItems.find(
       (pendingItem) => pendingItem.id === id && pendingItem.userId === userId,
     );
@@ -58,24 +58,24 @@ export class InMemoryPendingItemsRepository implements PendingItemsRepository {
       throw Error(`Pending item ${id} not found`);
     }
 
-    return pendingItem;
+    return Promise.resolve(pendingItem);
   }
 
-  createPendingItem(userId: string, pendingItem: PendingItem): PendingItem {
+  createPendingItem(userId: string, pendingItem: PendingItem): Promise<PendingItem> {
     this.pendingItems.push({
       ...pendingItem,
       id: uuidv4(),
       userId: userId,
     });
 
-    return this.pendingItems[this.pendingItems.length - 1];
+    return Promise.resolve(this.pendingItems[this.pendingItems.length - 1]);
   }
 
   updatePendingItem(
     userId: string,
     id: string,
     pendingItem: PendingItem,
-  ): PendingItem {
+  ): Promise<PendingItem> {
     let pendingItemToUpdate = this.pendingItems.find(
       (pendingItem) => pendingItem.id === id && pendingItem.userId === userId,
     );
@@ -94,7 +94,7 @@ export class InMemoryPendingItemsRepository implements PendingItemsRepository {
     );
     this.pendingItems.push(pendingItemToUpdate);
 
-    return pendingItemToUpdate;
+    return Promise.resolve(pendingItemToUpdate);
   }
 
   deletePendingItem(userId: string, id: string): void {

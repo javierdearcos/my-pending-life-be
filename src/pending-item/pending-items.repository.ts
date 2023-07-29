@@ -1,14 +1,14 @@
 import { PendingItem } from './entities';
 
 export interface PendingItemsRepository {
-  findAllPendingItems(userId: string): PendingItem[];
-  findPendingItem(userId: string, id: string): PendingItem;
-  createPendingItem(userId: string, pendingItem: PendingItem): PendingItem;
+  findAllPendingItems(userId: string): Promise<PendingItem[]>;
+  findPendingItem(userId: string, id: string): Promise<PendingItem>;
+  createPendingItem(userId: string, pendingItem: PendingItem): Promise<PendingItem>;
   updatePendingItem(
     userId: string,
     id: string,
     pendingItem: PendingItem,
-  ): PendingItem;
+  ): Promise<PendingItem>;
   deletePendingItem(userId: string, id: string): void;
 }
 

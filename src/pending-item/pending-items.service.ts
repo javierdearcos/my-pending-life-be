@@ -9,9 +9,8 @@ export class PendingItemsService {
     private readonly pendingItemRepository: PendingItemsRepository,
   ) {}
 
-  create(userId: string, createPendingItem: CreatePendingItem): PendingItem {
+  async create(userId: string, createPendingItem: CreatePendingItem): Promise<PendingItem> {
     return this.pendingItemRepository.createPendingItem(userId, {
-      id: null,
       userId,
       ...createPendingItem,
       status: Status.TO_DO,
@@ -20,20 +19,20 @@ export class PendingItemsService {
     });
   }
 
-  findAll(userId: string): PendingItem[] {
+  async findAll(userId: string): Promise<PendingItem[]> {
     return this.pendingItemRepository.findAllPendingItems(userId);
   }
 
-  findOne(userId: string, id: string): PendingItem {
+  async findOne(userId: string, id: string): Promise<PendingItem> {
     return this.pendingItemRepository.findPendingItem(userId, id);
   }
 
-  update(
+  async update(
     userId: string,
     id: string,
     updatePendingItemDto: UpdatePendingItem,
-  ): PendingItem {
-    const pendingItemToUpdate = this.pendingItemRepository.findPendingItem(
+  ): Promise<PendingItem> {
+    const pendingItemToUpdate = await this.pendingItemRepository.findPendingItem(
       userId,
       id,
     );

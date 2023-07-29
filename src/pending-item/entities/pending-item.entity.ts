@@ -4,7 +4,8 @@ import { Status } from './status.enum';
 @Entity()
 export class PendingItem {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id?: string;
+  @Column('text')
   userId: string;
   @Column('text')
   name: string;
@@ -12,7 +13,10 @@ export class PendingItem {
   description?: string;
   @Column('numeric')
   numberOfHours: number;
-  @Column('numeric')
+  @Column({
+    nullable: true,
+    type: 'numeric'
+  })
   cost?: number;
   @Column({
     type: 'enum',
@@ -23,10 +27,19 @@ export class PendingItem {
   prioritized: boolean;
   @Column('date')
   createdAt: Date;
-  @Column('date')
+  @Column({
+    nullable: true,
+    type: 'date'
+  })
   modifiedAt?: Date;
-  @Column('date')
+  @Column({
+    nullable: true,
+    type: 'date'
+  })
   prioritizedAt?: Date;
-  @Column('date')
+  @Column({
+    nullable: true,
+    type: 'date'
+  })
   finishedAt?: Date;
 }
