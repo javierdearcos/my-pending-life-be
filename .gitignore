@@ -1,6 +1,9 @@
 # Config File
 .env
 
+# Database
+postgres
+
 # Compiled Output
 /dist
 /node_modules
