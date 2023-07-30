@@ -5,7 +5,9 @@ import { User } from 'src/users/entities/user.entity';
 @Entity()
 export class PendingItem {
   @PrimaryGeneratedColumn('uuid')
-  id?: string;
+  id: string;
+  @Column()
+  userId: string;
   @ManyToOne(type => User, user => user.pendingItems)
   user: User;
   @Column('text')

@@ -1,16 +1,16 @@
 import { User } from 'src/users/entities/user.entity';
-import { PendingItem } from './entities';
+import { CreatePendingItem, PendingItem } from './entities';
 
 export interface PendingItemsRepository {
-  findAllPendingItems(user: User): Promise<PendingItem[]>;
-  findPendingItem(user: User, id: string): Promise<PendingItem>;
-  createPendingItem(user: User, pendingItem: PendingItem): Promise<PendingItem>;
+  findAllPendingItems(userId: string): Promise<PendingItem[]>;
+  findPendingItem(userId: string, id: string): Promise<PendingItem>;
+  createPendingItem(userId: string, pendingItem: CreatePendingItem): Promise<PendingItem>;
   updatePendingItem(
-    user: User,
+    userId: string,
     id: string,
     pendingItem: PendingItem,
   ): Promise<PendingItem>;
-  deletePendingItem(user: User, id: string): void;
+  deletePendingItem(userId: string, id: string): void;
 }
 
 export const PendingItemsRepository = Symbol('PendingItemsRepository');

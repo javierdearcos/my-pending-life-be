@@ -11,21 +11,17 @@ export class PendingItemsService {
   ) {}
 
   async create(user: User, createPendingItem: CreatePendingItem): Promise<PendingItem> {
-    return this.pendingItemRepository.createPendingItem(user, {
-      user,
-      ...createPendingItem,
-      status: Status.TO_DO,
-      prioritized: false,
-      createdAt: new Date(),
+    return this.pendingItemRepository.createPendingItem(user.id, {
+      ...createPendingItem
     });
   }
 
   async findAll(user: User): Promise<PendingItem[]> {
-    return this.pendingItemRepository.findAllPendingItems(user);
+    return this.pendingItemRepository.findAllPendingItems(user.id);
   }
 
   async findOne(user: User, id: string): Promise<PendingItem> {
-    return this.pendingItemRepository.findPendingItem(user, id);
+    return this.pendingItemRepository.findPendingItem(user.id, id);
   }
 
   async update(
@@ -34,11 +30,11 @@ export class PendingItemsService {
     updatePendingItemDto: UpdatePendingItem,
   ): Promise<PendingItem> {
     const pendingItemToUpdate = await this.pendingItemRepository.findPendingItem(
-      user,
+      user.id,
       id,
     );
 
-    return this.pendingItemRepository.updatePendingItem(user, id, {
+    return this.pendingItemRepository.updatePendingItem(user.id, id, {
       ...pendingItemToUpdate,
       ...updatePendingItemDto,
       status: this.toStatus(updatePendingItemDto.status, pendingItemToUpdate.status),
@@ -67,6 +63,6 @@ export class PendingItemsService {
   }
 
   remove(user: User, id: string): void {
-    this.pendingItemRepository.deletePendingItem(user, id);
+    this.pendingItemRepository.deletePendingItem(user.id, id);
   }
 }
