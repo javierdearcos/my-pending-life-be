@@ -11,11 +11,13 @@ export class InMemoryUsersRepository implements UsersRepository {
           id: '69b23172-b1ed-40c3-a5f9-78ee15743ccc',
           username: 'john',
           password: 'doe',
+          pendingItems: []
         },
         {
           id: 'bbd020d9-b989-4e4c-9b00-7a4cee752ddd',
           username: 'jane',
           password: 'dane',
+          pendingItems: []
         },
     ];
 

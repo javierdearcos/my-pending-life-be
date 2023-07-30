@@ -1,12 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Status } from './status.enum';
+import { User } from 'src/users/entities/user.entity';
 
 @Entity()
 export class PendingItem {
   @PrimaryGeneratedColumn('uuid')
   id?: string;
-  @Column('text')
-  userId: string;
+  @ManyToOne(type => User, user => user.pendingItems)
+  user: User;
   @Column('text')
   name: string;
   @Column('text')

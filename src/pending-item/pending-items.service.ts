@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreatePendingItem, PendingItem, Status, UpdatePendingItem } from './entities';
 import { PendingItemsRepository } from './pending-items.repository';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class PendingItemsService {
@@ -9,9 +10,9 @@ export class PendingItemsService {
     private readonly pendingItemRepository: PendingItemsRepository,
   ) {}
 
-  async create(userId: string, createPendingItem: CreatePendingItem): Promise<PendingItem> {
-    return this.pendingItemRepository.createPendingItem(userId, {
-      userId,
+  async create(user: User, createPendingItem: CreatePendingItem): Promise<PendingItem> {
+    return this.pendingItemRepository.createPendingItem(user, {
+      user,
       ...createPendingItem,
       status: Status.TO_DO,
       prioritized: false,
@@ -19,25 +20,25 @@ export class PendingItemsService {
     });
   }
 
-  async findAll(userId: string): Promise<PendingItem[]> {
-    return this.pendingItemRepository.findAllPendingItems(userId);
+  async findAll(user: User): Promise<PendingItem[]> {
+    return this.pendingItemRepository.findAllPendingItems(user);
   }
 
-  async findOne(userId: string, id: string): Promise<PendingItem> {
-    return this.pendingItemRepository.findPendingItem(userId, id);
+  async findOne(user: User, id: string): Promise<PendingItem> {
+    return this.pendingItemRepository.findPendingItem(user, id);
   }
 
   async update(
-    userId: string,
+    user: User,
     id: string,
     updatePendingItemDto: UpdatePendingItem,
   ): Promise<PendingItem> {
     const pendingItemToUpdate = await this.pendingItemRepository.findPendingItem(
-      userId,
+      user,
       id,
     );
 
-    return this.pendingItemRepository.updatePendingItem(userId, id, {
+    return this.pendingItemRepository.updatePendingItem(user, id, {
       ...pendingItemToUpdate,
       ...updatePendingItemDto,
       status: this.toStatus(updatePendingItemDto.status, pendingItemToUpdate.status),
@@ -65,7 +66,7 @@ export class PendingItemsService {
     }
   }
 
-  remove(userId: string, id: string): void {
-    this.pendingItemRepository.deletePendingItem(userId, id);
+  remove(user: User, id: string): void {
+    this.pendingItemRepository.deletePendingItem(user, id);
   }
 }

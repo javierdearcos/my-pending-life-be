@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   HttpCode,
+  UseGuards,
 } from '@nestjs/common';
 import { PendingItemsService } from './pending-items.service';
 import {
@@ -14,49 +15,52 @@ import {
   PendingItemDto,
   UpdatePendingItemDto,
 } from './dto';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { User } from 'src/users/entities/user.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-interface User {
-  id: string;
-}
 
 @Controller('pending-items')
 export class PendingItemsController {
+
   constructor(private readonly pendingItemService: PendingItemsService) {}
 
-  private user: User = {
-    id: 'f97be3f5-4af3-419b-bb56-8520f0a49ce6',
-  };
-
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createPendingItemDto: CreatePendingItemDto): Promise<PendingItemDto> {
-    return this.pendingItemService.create(this.user.id, createPendingItemDto);
+  create(@CurrentUser() user: User, @Body() createPendingItemDto: CreatePendingItemDto): Promise<PendingItemDto> {
+    return this.pendingItemService.create(user, createPendingItemDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll(): Promise<PendingItemDto[]> {
-    return this.pendingItemService.findAll(this.user.id);
+  findAll(@CurrentUser() user: User): Promise<PendingItemDto[]> {
+    return this.pendingItemService.findAll(user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<PendingItemDto> {
-    return this.pendingItemService.findOne(this.user.id, id);
+  findOne(@CurrentUser() user: User, @Param('id') id: string): Promise<PendingItemDto> {
+    return this.pendingItemService.findOne(user, id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(
+    @CurrentUser() user: User, 
     @Param('id') id: string,
     @Body() updatePendingItemDto: UpdatePendingItemDto,
   ): Promise<PendingItemDto> {
     return this.pendingItemService.update(
-      this.user.id,
+      user,
       id,
       updatePendingItemDto
     );
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: string): void {
-    this.pendingItemService.remove(this.user.id, id);
+  remove(@CurrentUser() user, @Param('id') id: string): void {
+    this.pendingItemService.remove(user, id);
   }
 }

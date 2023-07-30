@@ -3,51 +3,53 @@ import { PendingItem, Status } from './entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PendingItemsRepository } from './pending-items.repository';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
-export class DatabasePendingItemsRepository implements PendingItemsRepository {
+export class DbPendingItemsRepository implements PendingItemsRepository {
 
   constructor(
     @InjectRepository(PendingItem) private readonly repository: Repository<PendingItem>
   ) {}
 
-  findAllPendingItems(userId: string): Promise<PendingItem[]> {
+  findAllPendingItems(user: User): Promise<PendingItem[]> {
+    console.log(`Find in the database pending items from user ${user.id}`);
     return this.repository.findBy({
-      userId
+      user
     });
   }
-  findPendingItem(userId: string, id: string): Promise<PendingItem> {
+  findPendingItem(user: User, id: string): Promise<PendingItem> {
     return this.repository.findOneBy({
       id,
-      userId
+      user
     });
   }
   
-  createPendingItem(userId: string, pendingItem: PendingItem): Promise<PendingItem> {
+  createPendingItem(user: User, pendingItem: PendingItem): Promise<PendingItem> {
     return this.repository.save({
       ...pendingItem,
-      userId
+      user
     });
   }
 
-  async updatePendingItem(userId: string, id: string, pendingItem: PendingItem): Promise<PendingItem> {
+  async updatePendingItem(user: User, id: string, pendingItem: PendingItem): Promise<PendingItem> {
     const pendingItemToUpdate = await this.repository.findOneBy({
       id,
-      userId
+      user
     });
 
     const updatedPendingItem = await this.repository.preload({
       ...pendingItemToUpdate,
       ...pendingItem,
       id,
-      userId,
+      user,
     });
 
     return this.repository.save(updatedPendingItem);
   }
-  deletePendingItem(userId: string, id: string): void {
+  deletePendingItem(user: User, id: string): void {
     this.repository.delete({
-      userId,
+      user,
       id
     });
   }
