@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
 import { User } from './entities/user.entity';
+import { CreateUser } from './entities/create-user.entity';
 
 @Injectable()
 export class UsersService {
@@ -10,7 +11,7 @@ export class UsersService {
         private readonly usersRepository: UsersRepository
     ) {}
 
-    async createUser(user: User): Promise<User> {
+    async createUser(user: CreateUser): Promise<User> {
         return this.usersRepository.createUser(user);
     }
 
