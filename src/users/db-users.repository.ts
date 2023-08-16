@@ -16,9 +16,15 @@ export class DbUsersRepository implements UsersRepository {
     }
 
     async findUser(username: string): Promise<User> {
-        return this.repository.findOneBy({
-            username
-        });
+        return this.repository.findOne({
+            where: {
+                username: username
+            },
+            relations: {
+                pendingItems: true
+            }
+        }
+    );
     }
 
 }

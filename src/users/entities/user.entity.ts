@@ -11,6 +11,6 @@ export class User {
     username: string;
     @Column('text')
     password: string;
-    @OneToMany(type => PendingItem, pendingItem => pendingItem.user)
+    @OneToMany(() => PendingItem, pendingItem => pendingItem.user)
     pendingItems: PendingItem[];
 }

@@ -12,7 +12,10 @@ export class PendingItemsService {
 
   async create(user: User, createPendingItem: CreatePendingItem): Promise<PendingItem> {
     return this.pendingItemRepository.createPendingItem(user.id, {
-      ...createPendingItem
+      ...createPendingItem,
+      description: createPendingItem.description || '',
+      numberOfHours: createPendingItem.numberOfHours || 0.0,
+      cost: createPendingItem.cost || 0.0
     });
   }
 

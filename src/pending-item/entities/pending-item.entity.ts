@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Status } from './status.enum';
 import { User } from 'src/users/entities/user.entity';
 
@@ -6,9 +6,10 @@ import { User } from 'src/users/entities/user.entity';
 export class PendingItem {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column()
+  @Column('uuid')
   userId: string;
-  @ManyToOne(type => User, user => user.pendingItems)
+  @ManyToOne(() => User, user => user.pendingItems)
+  @JoinColumn()
   user: User;
   @Column('text')
   name: string;
